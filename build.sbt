@@ -63,7 +63,8 @@ ThisBuild / githubWorkflowAddedJobs +=
   )
 
 // This is used in a couple places
-lazy val fs2Version = "3.2.4"
+ThisBuild / resolvers += "s01" at "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+lazy val fs2Version = "3.2.7-100-cc479f4-SNAPSHOT"
 lazy val natchezVersion = "0.1.6"
 
 // We do `evictionCheck` in CI

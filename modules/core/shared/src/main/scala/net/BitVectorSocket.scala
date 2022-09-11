@@ -40,8 +40,12 @@ object BitVectorSocket {
   ): BitVectorSocket[F] =
     new BitVectorSocket[F] {
 
+      def frintln(s: String) =
+        ev.unit >> ev.pure(println(s))
+    
       def readBytes(n: Int): F[Array[Byte]] =
-        socket.readN(n).flatMap { c =>
+        frintln(s"reading $n") >> socket.readN(n).flatMap { c =>
+          println(s"oh i read! $c")
           if (c.size == n) c.toArray.pure[F]
           else ev.raiseError(EofException(n, c.size))
         }
@@ -49,8 +53,8 @@ object BitVectorSocket {
       override def read(nBytes: Int): F[BitVector] =
         readBytes(nBytes).map(BitVector(_))
 
-      override def write(bits: BitVector): F[Unit] =
-        socket.write(Chunk.array(bits.toByteArray))
+      override def write(bits: BitVector): F[Unit] ={
+        frintln(s"writing $bits") *> socket.write(Chunk.array(bits.toByteArray)) *> frintln(s"write done!")}
 
     }
 

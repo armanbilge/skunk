@@ -132,7 +132,7 @@ object BufferedMessageSocket {
       paSig <- SignallingRef[F, Map[String, String]](Map.empty)
       bkSig <- Deferred[F, BackendKeyData]
       noTop <- Topic[F, Notification[String]]
-      fib   <- next(ms, xaSig, paSig, bkSig, noTop).repeat.evalMap(queue.offer).compile.drain.attempt.flatMap {
+      fib   <- (Stream.exec(Concurrent[F].unit >> Concurrent[F].pure(println("come on come on"))) ++ next(ms, xaSig, paSig, bkSig, noTop)).repeat.evalMap(queue.offer).compile.drain.attempt.flatMap {
         case Left(e)  => queue.offer(NetworkError(e)) // publish the failure
         case Right(a) => a.pure[F]
       } .start
@@ -144,6 +144,7 @@ object BufferedMessageSocket {
           term.get.flatMap {
             case Some(t) => Concurrent[F].raiseError(t)
             case None    =>
+              println("beginning a take")
               queue.take.flatMap {
                 case e: NetworkError => term.set(Some(e.cause)) *> receive
                 case m               => m.pure[F]

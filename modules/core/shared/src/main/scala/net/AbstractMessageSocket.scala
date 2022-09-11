@@ -15,6 +15,7 @@ abstract class AbstractMessageSocket[F[_]: Concurrent]
 
   override def expect[B](f: PartialFunction[BackendMessage, B])(implicit or: Origin): F[B] =
     receive.flatMap { m =>
+      println(s"received! $m")
       if (f.isDefinedAt(m)) f(m).pure[F]
       else Concurrent[F].raiseError(new ProtocolError(m, or))
     }

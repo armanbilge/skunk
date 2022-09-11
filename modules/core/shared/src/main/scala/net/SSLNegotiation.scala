@@ -50,9 +50,9 @@ object SSLNegotiation {
 
     Resource.eval(initiate).flatMap {
       case 'S' => 
-        sslOptions.tlsContext.clientBuilder(socket).withParameters(sslOptions.tlsParameters).withLogger(
+        Resource.pure[F, Unit](println("here!")) *> sslOptions.tlsContext.clientBuilder(socket).withParameters(sslOptions.tlsParameters).withLogger(
           sslOptions.logger.fold[TLSLogger[F]](TLSLogger.Disabled)(logger => TLSLogger.Enabled(x => logger(x)))
-        ).build
+        ).build.evalTap(_ => println("here?").pure)
       case 'N' => if (sslOptions.fallbackOk) socket.pure[Resource[F, *]] else Resource.eval(fail(s"SSL not available."))
       case  c  => Resource.eval(fail(s"SSL negotiation returned '$c', expected 'S' or 'N'."))
     }

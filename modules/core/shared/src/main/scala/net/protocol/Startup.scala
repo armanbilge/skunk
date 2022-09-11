@@ -37,7 +37,9 @@ object Startup extends StartupCompanionPlatform {
                    "user"     -> user,
                    "database" -> database
                  )
+            _ = println("sending!")
             _ <- send(sm)
+            _ = println("sent!")
             _ <- flatExpectStartup(sm) {
                     case AuthenticationOk                => ().pure[F]
                     case AuthenticationCleartextPassword => authenticationCleartextPassword[F](sm, password)

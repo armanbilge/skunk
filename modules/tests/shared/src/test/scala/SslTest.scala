@@ -17,13 +17,14 @@ class SslTest extends ffstest.FTest {
     val Trust   = 5433
   }
 
-  test("successful login with SSL.Trusted (ssl available)") {
+  test("successful login with SSL.Trusted (ssl available)".only) {
     Session.single[IO](
-      host     = "localhost",
+      host     = "127.0.0.1",
       user     = "jimmy",
       database = "world",
       password = Some("banana"),
-      ssl      = SSL.Trusted,
+      ssl      = SSL.None,
+      debug = true
     ).use(_ => IO.unit)
   }
 

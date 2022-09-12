@@ -23,7 +23,7 @@ class SslTest extends ffstest.FTest {
       user     = "jimmy",
       database = "world",
       password = Some("banana"),
-      ssl      = SSL.None,
+      ssl      = SSL.Trusted,
       debug = true
     ).use(_ => IO.unit)
   }

@@ -48,9 +48,28 @@ object SSLNegotiation {
         case Some(b) => b.pure[F]
       }
 
+    def frintln(s: String): F[Unit] =
+      ev.unit.flatMap(_ => ev.pure(println(s)))
+
+    val loggedSocket: Socket[F] = new Socket[F] {
+      def endOfInput: F[Unit] = ???
+      def endOfOutput: F[Unit] = ???
+      def isOpen: F[Boolean] = ???
+      def localAddress: F[com.comcast.ip4s.SocketAddress[com.comcast.ip4s.IpAddress]] = ???
+      def read(maxBytes: Int): F[Option[fs2.Chunk[Byte]]] =
+        frintln(s"underlying reading up to ${maxBytes}") *> socket.read(maxBytes).flatTap(x => frintln(s"underlying read ${x.map(_.size)}"))
+      def readN(numBytes: Int): F[fs2.Chunk[Byte]] =
+        frintln(s"underlying reading ${numBytes}") *> socket.readN(numBytes) <* frintln(s"underlying read exactly ${numBytes}")
+      def reads: fs2.Stream[F,Byte] = ???
+      def remoteAddress: F[com.comcast.ip4s.SocketAddress[com.comcast.ip4s.IpAddress]] = ???
+      def write(bytes: fs2.Chunk[Byte]): F[Unit] =
+        frintln("underlying writing") *> socket.write(bytes) <* frintln("underlying wrote")
+      def writes: fs2.Pipe[F,Byte,Nothing] = ???
+    }
+
     Resource.eval(initiate).flatMap {
       case 'S' => 
-        Resource.pure[F, Unit](println("here!")) *> sslOptions.tlsContext.clientBuilder(socket).withParameters(sslOptions.tlsParameters).withLogger(
+        Resource.pure[F, Unit](println("here!")) *> sslOptions.tlsContext.clientBuilder(loggedSocket).withParameters(sslOptions.tlsParameters).withLogger(
           sslOptions.logger.fold[TLSLogger[F]](TLSLogger.Disabled)(logger => TLSLogger.Enabled(x => logger(x)))
         ).build.evalTap(_ => println("here?").pure)
       case 'N' => if (sslOptions.fallbackOk) socket.pure[Resource[F, *]] else Resource.eval(fail(s"SSL not available."))

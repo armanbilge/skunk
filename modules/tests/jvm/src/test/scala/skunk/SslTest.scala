@@ -27,6 +27,8 @@ class SslTest extends ffstest.FTest {
     ).use(_ => IO.unit)
   }
 
+  import scala.concurrent.duration._
+
   test("successful login with SSL.None (ssl available)") {
     Session.single[IO](
       host     = "localhost",
@@ -34,10 +36,17 @@ class SslTest extends ffstest.FTest {
       database = "world",
       password = Some("banana"),
       ssl      = SSL.None,
+      debug = true
     ).use(_ => IO.unit)
+    .race(IO.sleep(10.seconds) *> IO.blocking {
+      val bean = java.lang.management.ManagementFactory.getThreadMXBean()
+      val infos = bean.dumpAllThreads(true, true)
+      System.out.println(infos.map(_.toString).mkString)
+    })
   }
 
   test("failed login with SSL.System (ssl available)") {
+
     Session.single[IO](
       host     = "localhost",
       user     = "jimmy",
@@ -45,7 +54,13 @@ class SslTest extends ffstest.FTest {
       password = Some("banana"),
       ssl      = SSL.System,
       debug = true
-    ).use(_ => IO.unit).assertFailsWith[SSLException].as("sigh") // TODO! Better failure!
+    ).use(_ => IO.unit)
+    .race(IO.sleep(10.seconds) *> IO.blocking {
+      val bean = java.lang.management.ManagementFactory.getThreadMXBean()
+      val infos = bean.dumpAllThreads(true, true)
+      System.out.println(infos.map(_.toString).mkString)
+    })
+    .assertFailsWith[SSLException].as("sigh") // TODO! Better failure!
   }
 
   test("failed login with SSL.Trusted (ssl not available)") {

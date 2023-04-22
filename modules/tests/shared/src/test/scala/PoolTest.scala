@@ -177,7 +177,7 @@ class PoolTest extends FTest {
         factory.use { p =>
           p(noop).use { _ =>
             for {
-              t <- IO(Random.nextInt() % 100)
+              t <- IO(Random.nextInt(100))
               _ <- IO.sleep(t.milliseconds)
             } yield ()
           }

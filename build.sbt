@@ -74,7 +74,7 @@ ThisBuild / mimaBinaryIssueFilters ++= List(
 )
 
 // This is used in a couple places
-lazy val fs2Version = "3.6.1-1-df26d21-SNAPSHOT"
+lazy val fs2Version = "3.7.0-RC4"
 lazy val natchezVersion = "0.3.1"
 
 // Global Settings
@@ -126,7 +126,7 @@ lazy val core = crossProject(JVMPlatform, JSPlatform, NativePlatform)
     scalacOptions ~= (_.filterNot(_ == "-source:3.0-migration")),
     libraryDependencies ++= Seq(
       "org.typelevel"          %%% "cats-core"               % "2.9.0",
-      "org.typelevel"          %%% "cats-effect"             % "3.5.0-RC4",
+      "org.typelevel"          %%% "cats-effect"             % "3.5-c760a55",
       "co.fs2"                 %%% "fs2-core"                % fs2Version,
       "co.fs2"                 %%% "fs2-io"                  % fs2Version,
       "org.scodec"             %%% "scodec-bits"             % "1.1.37",
@@ -137,7 +137,8 @@ lazy val core = crossProject(JVMPlatform, JSPlatform, NativePlatform)
       "org.scala-lang.modules" %%% "scala-collection-compat" % "2.9.0",
     ) ++ Seq(
       "com.beachape"  %%% "enumeratum"   % "1.7.2",
-    ).filterNot(_ => tlIsScala3.value)
+    ).filterNot(_ => tlIsScala3.value),
+    dependencyOverrides += "org.typelevel" %%% "cats-effect" % "3.5-c760a55"
   ).jvmSettings(
     libraryDependencies += "com.ongres.scram" % "client" % "2.1",
   ).platformsSettings(JSPlatform, NativePlatform)(

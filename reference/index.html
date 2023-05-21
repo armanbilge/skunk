@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
-    <title>Tracing</title>
+    <title>Intro</title>
     
       <meta name="author" content="Rob Norris"/>
     
@@ -81,22 +81,22 @@
       <ul class="nav-list">
         <li class="level1"><a href="../index.html">Skunk</a></li>
         <li class="level1 nav-header">Tutorial</li>
-        <li class="level2"><a href="index.html">Intro</a></li>
-        <li class="level2"><a href="Setup.html">Setup</a></li>
-        <li class="level2"><a href="Query.html">Queries</a></li>
-        <li class="level2"><a href="Command.html">Commands</a></li>
-        <li class="level2"><a href="Transactions.html">Transactions</a></li>
-        <li class="level2"><a href="Channels.html">Channels</a></li>
-        <li class="level2 active"><a href="#">Tracing</a></li>
+        <li class="level2"><a href="../tutorial/index.html">Intro</a></li>
+        <li class="level2"><a href="../tutorial/Setup.html">Setup</a></li>
+        <li class="level2"><a href="../tutorial/Query.html">Queries</a></li>
+        <li class="level2"><a href="../tutorial/Command.html">Commands</a></li>
+        <li class="level2"><a href="../tutorial/Transactions.html">Transactions</a></li>
+        <li class="level2"><a href="../tutorial/Channels.html">Channels</a></li>
+        <li class="level2"><a href="../tutorial/Tracing.html">Tracing</a></li>
         <li class="level1 nav-header">Reference</li>
-        <li class="level2"><a href="../reference/index.html">Intro</a></li>
-        <li class="level2"><a href="../reference/Sessions.html">Sessions</a></li>
-        <li class="level2"><a href="../reference/TwiddleLists.html">Twiddle Lists</a></li>
-        <li class="level2"><a href="../reference/Encoders.html">Encoders</a></li>
-        <li class="level2"><a href="../reference/Fragments.html">Fragments</a></li>
-        <li class="level2"><a href="../reference/Identifiers.html">Identifiers</a></li>
-        <li class="level2"><a href="../reference/Concurrency.html">Concurrency</a></li>
-        <li class="level2"><a href="../reference/SchemaTypes.html">Schema Types</a></li>
+        <li class="level2 active"><a href="#">Intro</a></li>
+        <li class="level2"><a href="Sessions.html">Sessions</a></li>
+        <li class="level2"><a href="TwiddleLists.html">Twiddle Lists</a></li>
+        <li class="level2"><a href="Encoders.html">Encoders</a></li>
+        <li class="level2"><a href="Fragments.html">Fragments</a></li>
+        <li class="level2"><a href="Identifiers.html">Identifiers</a></li>
+        <li class="level2"><a href="Concurrency.html">Concurrency</a></li>
+        <li class="level2"><a href="SchemaTypes.html">Schema Types</a></li>
       </ul>
 
       <ul class="nav-list">
@@ -111,12 +111,10 @@
     <div id="container">
 
       <nav id="page-nav">
-        <p class="header"><a href="#">Tracing</a></p>
+        <p class="header"><a href="#">Intro</a></p>
 
         <ul class="nav-list">
-          <li class="level1"><a href="#i-don-t-care">I Don&#39;t Care</a></li>
-          <li class="level1"><a href="#tracing-with-jaeger">Tracing with Jaeger</a></li>
-          <li class="level1"><a href="#tracing-example">Tracing Example</a></li>
+          <li class="level1"><a href="#table-of-contents">Table of Contents</a></li>
         </ul>
 
         <p class="footer"></p>
@@ -124,21 +122,21 @@
 
       <main class="content">
 
-        <h1 id="tracing" class="title">Tracing</h1>
-        <p>Skunk uses structured tracing instead of logging, using the <a href="https://github.com/typelevel/otel4s">otel4s</a> tracing library.</p>
+        <h1 id="reference" class="title">Reference</h1>
+        <p>This section contains detailed discussions of Skunk&#39;s core abstractions and machinery.</p>
         
-        <h2 id="i-don-t-care" class="section">I Don&#39;t Care<a class="anchor-link right" href="#i-don-t-care"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>If you don&#39;t care about tracing you have two choices:</p>
-        <ul>
-          <li>Use the <strong>no-op tracer</strong> to disable tracing entirely (<code>org.typelevel.otel4s.Tracer.noop</code>).</li>
-          <li>Use the <strong>log tracer</strong> to log completed traces to a <a href="https://typelevel.org/log4cats/">log4cats</a> logger.</li>
+        <h2 id="table-of-contents" class="section">Table of Contents<a class="anchor-link right" href="#table-of-contents"><i class="icofont-laika">&#xef71;</i></a></h2>
+        <ul class="nav-list">
+          <li class="level1 nav-header">Reference</li>
+          <li class="level2 active"><a href="#">Intro</a></li>
+          <li class="level2"><a href="Sessions.html">Sessions</a></li>
+          <li class="level2"><a href="TwiddleLists.html">Twiddle Lists</a></li>
+          <li class="level2"><a href="Encoders.html">Encoders</a></li>
+          <li class="level2"><a href="Fragments.html">Fragments</a></li>
+          <li class="level2"><a href="Identifiers.html">Identifiers</a></li>
+          <li class="level2"><a href="Concurrency.html">Concurrency</a></li>
+          <li class="level2"><a href="SchemaTypes.html">Schema Types</a></li>
         </ul>
-        
-        <h2 id="tracing-with-jaeger" class="section">Tracing with Jaeger<a class="anchor-link right" href="#tracing-with-jaeger"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>Easy because there&#39;s a docker container.</p>
-        
-        <h2 id="tracing-example" class="section">Tracing Example<a class="anchor-link right" href="#tracing-example"><i class="icofont-laika">&#xef71;</i></a></h2>
-        <p>... program that adds its own events to the trace</p>
 
         <hr style="margin-top: 30px"/>
         <footer style="font-size: 90%; text-align: center">
